@@ -21,6 +21,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -40,6 +41,7 @@ public class MainActivity extends FragmentActivity {
     private String[] drawerListViewElements = {"Exercises","Statistics"};
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
+    private boolean drawerOpened = false;
 
 	// visual elements
 	private Button  setTimeButton, resetButton;
@@ -90,6 +92,7 @@ public class MainActivity extends FragmentActivity {
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item,
                 drawerListViewElements ));
         mDrawerLayout.setScrimColor(0xE0000000);
+
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -99,7 +102,10 @@ public class MainActivity extends FragmentActivity {
 		
 		// display the initial time on the clock
 		timerValue.setText(setTextTime(chosenTimeInSeconds));
-		
+
+        // Announce the presence of the drawer
+        customHandler.postDelayed(announceDrawerPresence, 2000);
+
 		// create an alarm manager and the needed intents/pending intents
 		alarmManager =  (AlarmManager) getSystemService(ALARM_SERVICE);
 		
@@ -267,7 +273,10 @@ public class MainActivity extends FragmentActivity {
 		}
 	 }
 
-    /** For resuming the main activity from the notification bar */
+    /**
+     * For resuming the main activity from the notification bar
+     *
+     * */
 	 @Override
 	 public void onNewIntent(Intent intent){
 		 Bundle extras = intent.getExtras();
@@ -344,6 +353,30 @@ public class MainActivity extends FragmentActivity {
 			}
 		}
 	};
+
+    /**
+     * Runnable to show to the user the presence of the drawer
+     */
+    private Runnable announceDrawerPresence = new Runnable() {
+        @Override
+        public void run() {
+            if (drawerOpened)
+            {
+                mDrawerLayout.closeDrawer(Gravity.START);
+                drawerOpened = false;
+            }
+            else
+            {
+                mDrawerLayout.openDrawer(Gravity.START);
+                drawerOpened = true;
+                // close it in 1 second
+                customHandler.postDelayed(this, 1500);
+            }
+
+        }
+    };
+
+
 		
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

@@ -9,6 +9,7 @@
     android:textColor="@android:color/white"
     android:minHeight="45sp"
     android:paddingLeft="15sp"
-    android:paddingBottom="40dp"
+    android:paddingBottom="20dp"
+    android:paddingTop="20dp"
 />
 <!-- From: file:/C:/Users/Arnaud/AndroidstudioProjects/BoostBreak/app/src/main/res/layout/drawer_list_item.xml -->
