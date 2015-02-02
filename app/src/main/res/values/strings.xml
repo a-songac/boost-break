@@ -17,5 +17,8 @@
     <string name="exerciseName">Exercise:</string>
     <string name="exerciseDuration">Duration: </string>
     <string name="exerciseDescription">Description: </string>
+    <string name="title_activity_exercises_list">ExercisesListActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
