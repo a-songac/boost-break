@@ -1,6 +1,6 @@
 package project.boostbreak;
 /*
- * TODO drawer to point to exercise list, comlete with http://www.mkyong.com/android/android-listview-example/
+ * TODO drawer to point to exercise list, complete with http://www.mkyong.com/android/android-listview-example/
  * TODO implement list view to see the exercises (fragment or activity?)
  * TODO implement database for all exercises
  * TODO implement the possibility to add/delete and enable/disable items
@@ -70,6 +70,8 @@ public class MainActivity extends FragmentActivity {
 	// intent and pending intent for ongoing period notification
 	private Intent ongoingPeriodIntent;
 	private PendingIntent ongoingPeriodPendingIntent;
+
+
 	// notification texts
 	private static final CharSequence contentTitle = "Boost Break";
 	private static final CharSequence contentText = "In Work Period";
@@ -89,6 +91,10 @@ public class MainActivity extends FragmentActivity {
 		setTimeButton = (Button) findViewById(R.id.setTimeButton);
 
         // Set the navigation drawer
+
+        final Intent exerciseListIntent =  new Intent(this, ExercisesListActivity.class);
+        final Intent statsIntent =  new Intent(this, StatisticsActivity.class);
+
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item,
                 drawerListViewElements ));
         mDrawerLayout.setScrimColor(0xE0000000);
@@ -97,6 +103,14 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // TODO Complete click listener
+                switch (position){
+                    case 0:
+                        startActivity(exerciseListIntent);
+                        break;
+                    case 1:
+                        startActivity(statsIntent);
+                }
+
             }
         });
 		

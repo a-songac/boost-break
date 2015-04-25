@@ -1,17 +1,35 @@
 package project.boostbreak;
 
 import android.app.Activity;
+import android.util.Log;
+import android.view.View;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class ExercisesListActivity extends Activity {
+public class ExercisesListActivity extends FragmentActivity {
+
+    static final String TAG = "ExerciseListActivity";
+    boolean mIsDualPane = false;
+    // Fragment containing the list of the exercises
+    ExercisesListFragment mExExercisesListFragment;
+
+    // Fragment containing an exercise description (present if 2-pane)
+    ExerciseDescriptionFragment mExerciseDescriptionFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercises_list);
+
+        // detect if dual pane
+        View descriptionView = findViewById(R.id.exercises_description_frag);
+        mIsDualPane = descriptionView != null && descriptionView.getVisibility() == View.VISIBLE;
+
+        // Fragments
+
     }
 
 
@@ -22,18 +40,7 @@ public class ExercisesListActivity extends Activity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
-        return super.onOptionsItemSelected(item);
-    }
+
 }

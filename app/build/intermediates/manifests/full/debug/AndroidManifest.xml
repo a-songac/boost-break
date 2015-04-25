@@ -11,6 +11,14 @@
     <uses-permission android:name="android.permission.VIBRATE" >
     </uses-permission>
 
+    <android:uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <android:uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -27,6 +35,15 @@
         </activity>
 
         <receiver android:name="project.boostbreak.AlarmReceiver" />
+
+        <activity
+            android:name="project.boostbreak.ExercisesListActivity"
+            android:label="@string/title_activity_exercises_list" >
+        </activity>
+        <activity
+            android:name="project.boostbreak.StatisticsActivity"
+            android:label="@string/title_activity_statistics" >
+        </activity>
     </application>
 
 </manifest>
