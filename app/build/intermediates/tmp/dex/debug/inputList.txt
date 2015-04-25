@@ -1,4 +1,0 @@
-C:\Users\Arnaud\AndroidstudioProjects\BoostBreak\app\build\intermediates\classes\debug
-C:\Users\Arnaud\AndroidstudioProjects\BoostBreak\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-4d6549830d6d9cddadf9d80bf3013feda8f0e9bc.jar
-C:\Users\Arnaud\AndroidstudioProjects\BoostBreak\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-3127e7fc07e4acc98ecb35263b87a8711ee592e5.jar
-C:\Users\Arnaud\AndroidstudioProjects\BoostBreak\app\build\intermediates\pre-dexed\debug\classes-719f9014bcebfba9c571d4f7e8dba0d9ad61adfb.jar
