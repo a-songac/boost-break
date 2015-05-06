@@ -13,15 +13,16 @@ import android.app.AlarmManager;
 import android.app.DialogFragment;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -34,11 +35,12 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements TimePickerDialog.OnTimeSetListener{
 	private static final String TAG = "pause-resume";
 
     // Drawer Elements
@@ -238,13 +240,13 @@ public class MainActivity extends FragmentActivity {
 			@SuppressLint("NewApi")
 			@Override
 			public void onClick(View v) {
-				// stop the timer and canel the alarm
+				// stop the timer and cancel the alarm
 				customHandler.removeCallbacks(updateTimerThread);
 				startButton.setChecked(false);
 				alarmManager.cancel(alarmTriggeredPendingIntent);
 				
 				DialogFragment timePickerFragment = new TimePickerFragment();
-				timePickerFragment.show(getFragmentManager(), "timePicker");				
+				timePickerFragment.show(getFragmentManager(), "timePicker");
 			}
 		});
 	}
@@ -488,4 +490,10 @@ public class MainActivity extends FragmentActivity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+	@Override
+	public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+		chosenTimeInSeconds = 60*(hourOfDay*60 + minute);
+		timeInSeconds = MainActivity.chosenTimeInSeconds;
+		timerValue.setText(setTextTime(60*(hourOfDay*60 + minute)));
+	}
 }
