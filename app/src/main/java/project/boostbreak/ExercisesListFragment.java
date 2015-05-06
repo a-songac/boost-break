@@ -1,20 +1,9 @@
 package project.boostbreak;
 
-import android.app.Activity;
 import android.app.ListFragment;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.Adapter;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.TextView;
 import android.widget.ListView;
-
 
 import java.util.ArrayList;
 
@@ -33,9 +22,9 @@ public class ExercisesListFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        String[] exercises = {"push up", "pull up"};
+        String[] exercisesArr = {"push up", "pull up", "crunches", "squats", "jumping jacks", "jogging", "yoga"};
 
-        mListAdapter = new ExerciseListAdapter(getActivity(), exercises);
+        mListAdapter = new ExerciseListAdapter(getActivity(), exercisesArr);
         setListAdapter(mListAdapter);
 
     }
