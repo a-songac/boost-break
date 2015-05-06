@@ -4,21 +4,16 @@
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="wrap_content"
+android:paddingBottom="15dp"
 tools:context="project.boostbreak.ExercisesListFragment">
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/exercise_list_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        android:minHeight="45sp"
-        android:paddingLeft="15sp"
-        android:paddingBottom="20dp"
-        android:paddingTop="20dp"
+        style="@style/ExerciseListItem"
         tools:text="Exercise"
-        />
+        android:layout_toLeftOf="@+id/active_switch"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Switch
         android:layout_width="wrap_content"
@@ -28,18 +23,17 @@ tools:context="project.boostbreak.ExercisesListFragment">
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignBottom="@+id/exercise_list_item" />
+        android:layout_alignBottom="@+id/exercise_short_desc_textView" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
         android:id="@+id/exercise_short_desc_textView"
-        android:layout_alignBottom="@+id/exercise_list_item"
+        style="@style/ExerciseListItemDescription"
+        tools:text="Short Description of the exercise"
+        android:layout_below="@+id/exercise_list_item"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:paddingLeft="15sp"
-        tools:text="Short Description of the exercise"/>
+        android:layout_toLeftOf="@+id/active_switch"
+        android:layout_toStartOf="@+id/active_switch" />
 
 
 </RelativeLayout>

@@ -39,8 +39,10 @@ public class ExerciseListAdapter extends ArrayAdapter<String> {
 
             // set up the view holder
             mViewHolder = new ViewHolder();
-            mViewHolder.titleTextView = (TextView) convertView.findViewById(R.id.exercise_list_item);
-            mViewHolder.descTextView = (TextView) convertView.findViewById(R.id.exercise_short_desc_textView);
+            mViewHolder.titleTextView = (TextView) convertView.findViewById(
+                    R.id.exercise_list_item);
+            mViewHolder.descTextView = (TextView) convertView.findViewById(
+                    R.id.exercise_short_desc_textView);
             mViewHolder.activeSwitch = (Switch) convertView.findViewById(R.id.active_switch);
 
             // store the holder with the view

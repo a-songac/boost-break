@@ -17,4 +17,26 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+
+    <!-- Styles for exercise list -->
+
+    <style name="ExerciseListItem">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:minHeight">45dp</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingBottom">20dp</item>
+        <item name="android:paddingTop">5dp</item>
+    </style>
+
+    <style name="ExerciseListItemDescription">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">5dp</item>
+    </style>
+
 </resources>

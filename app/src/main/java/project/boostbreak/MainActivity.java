@@ -101,13 +101,14 @@ public class MainActivity extends FragmentActivity {
 		resetButton = (Button) findViewById(R.id.resetButton);
 		setTimeButton = (Button) findViewById(R.id.setTimeButton);
 
-        // Set the navigation drawer
 
-        mTitle = mDrawerTitle = getTitle();
+        // Set the navigation drawer
+        mTitle = getTitle();
         mDrawerTitle = "Slider Menu";
         // intents for the menu items
         final Intent exerciseListIntent =  new Intent(this, ExercisesListActivity.class);
         final Intent statsIntent =  new Intent(this, StatisticsActivity.class);
+
 
         // list adapter for drawer
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item,
@@ -127,7 +128,7 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
-        // enabling action bar app icon and behaving it as toggle button
+        // enabling action bar app icon and behaving it as toggle button for the drawer
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
@@ -153,7 +154,7 @@ public class MainActivity extends FragmentActivity {
 		// display the initial time on the clock
 		timerValue.setText(setTextTime(chosenTimeInSeconds));
 
-        // Announce the presence of the drawer on first time
+        // Announce the presence of the drawer on first time (2 sec following opening)
         if(savedInstanceState == null)
             customHandler.postDelayed(announceDrawerPresence, 2000);
 
@@ -174,13 +175,15 @@ public class MainActivity extends FragmentActivity {
 					alarmTriggeredIntent = new Intent(MainActivity.this, AlarmReceiver.class);
 					alarmTriggeredPendingIntent =  PendingIntent.getBroadcast(MainActivity.this, 0,
                             alarmTriggeredIntent, 0);
+
 					// start the alarm
 					momentAlarmTriggeredMillis = System.currentTimeMillis() + timeInSeconds*1000L;
 					alarmManager.set(AlarmManager.RTC_WAKEUP,momentAlarmTriggeredMillis,
                             alarmTriggeredPendingIntent);
 					Log.i(AlarmReceiver.TAG, "Alarm has been started");
-					
-					// Start the handler for time flowing
+
+
+					// Start the handler for timer countdown
 					customHandler.post(updateTimerThread);
 					// inform of the beginning of a working period is started or resumed
 					if(!inPeriod){
@@ -301,7 +304,7 @@ public class MainActivity extends FragmentActivity {
 		 }
 		 
 		 // enable the active flag
-		 activityActive = true;		
+		 activityActive = true;
 		 
 		// Receive intent to launch exercise dialog from notification bar.
 		/* The exercise dialog is launched only if the proper intent is sent

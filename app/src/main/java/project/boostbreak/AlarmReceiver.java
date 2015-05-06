@@ -54,16 +54,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 			//the vibration needs to have an SDK permission in the manifest file
 			Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 			v.vibrate(500);
-//			 try { IMMERSION VIBRATION
-//
-//				 mLauncher = new Launcher(context);
-//		         mLauncher.play(Launcher.DOUBLE_STRONG_CLICK_100);
-//
-//		      } catch (Exception e) {
-//
-//		          Log.e("My App", "Exception!: " + e.getMessage());
-//
-//		      }
 			//sound
 			MediaPlayer mediaPlayer = MediaPlayer.create(context, R.raw.boxing_bell);
 			mediaPlayer.start(); 
