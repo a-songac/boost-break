@@ -9,6 +9,7 @@ package project.boostbreak;
  */
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.DialogFragment;
 import android.app.NotificationManager;
@@ -19,7 +20,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -40,7 +40,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 
-public class MainActivity extends FragmentActivity implements TimePickerDialog.OnTimeSetListener{
+public class MainActivity extends Activity implements TimePickerDialog.OnTimeSetListener{
 	private static final String TAG = "pause-resume";
 
     // Drawer Elements
@@ -378,6 +378,19 @@ public class MainActivity extends FragmentActivity implements TimePickerDialog.O
 		int secs = timeInSeconds % 60;
 		return "" + hours + ":" + String.format("%02d", mins) + ":" + String.format("%02d", secs);
 	}
+
+	/**
+	 * Callback to receive time values chosen from time picker dialog
+	 * @param view
+	 * @param hourOfDay
+	 * @param minute
+	 */
+	@Override
+	public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+		chosenTimeInSeconds = 60*(hourOfDay*60 + minute);
+		timeInSeconds = MainActivity.chosenTimeInSeconds;
+		timerValue.setText(setTextTime(60 * (hourOfDay * 60 + minute)));
+	}
 	
 	/** This Runnable iterates the time clock for the timer */
 	private Runnable updateTimerThread = new Runnable(){		
@@ -490,10 +503,4 @@ public class MainActivity extends FragmentActivity implements TimePickerDialog.O
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-	@Override
-	public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-		chosenTimeInSeconds = 60*(hourOfDay*60 + minute);
-		timeInSeconds = MainActivity.chosenTimeInSeconds;
-		timerValue.setText(setTextTime(60*(hourOfDay*60 + minute)));
-	}
 }

@@ -7,11 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
+import java.sql.SQLException;
+import java.util.List;
+
+import project.boostbreak.database.Exercise;
+import project.boostbreak.database.ExerciseDAO;
+
 public class ExercisesListFragment extends ListFragment {
 
 
     // The list adapter for the list we are displaying
-    ArrayAdapter<String> mListAdapter;
+    ArrayAdapter<Exercise> mListAdapter;
 
 
     @Override
@@ -24,10 +30,25 @@ public class ExercisesListFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        String[] exercisesArr = {"push up", "pull up", "crunches", "squats", "jumping jacks", "jogging", "yoga"};
+        ExerciseDAO mExerciseDAO = new ExerciseDAO(getActivity());
+        try{
+            mExerciseDAO.open();
+        }catch (SQLException e){
+            e.printStackTrace();
+            // todo handle properly the exception
+            System.exit(0);
+        }
 
-        mListAdapter = new ExerciseListAdapter(getActivity(), exercisesArr);
+        List<Exercise> exerciseList = mExerciseDAO.getAllExercises();
+
+        ArrayAdapter<Exercise> adapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.activity_list_item, exerciseList);
+        setListAdapter(adapter);
+
+        mListAdapter = new ExerciseListAdapter(getActivity(), exerciseList.toArray(new Exercise[exerciseList.size()]));
         setListAdapter(mListAdapter);
+
+
 
     }
 

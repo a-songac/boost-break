@@ -8,9 +8,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
 
-public class ExerciseListAdapter extends ArrayAdapter<String> {
+import project.boostbreak.database.Exercise;
+
+public class ExerciseListAdapter extends ArrayAdapter<Exercise> {
     private final Context context;
-    private final String[] values;
+    private final Exercise[] values;
 
     // holder view
     static class ViewHolder {
@@ -19,7 +21,7 @@ public class ExerciseListAdapter extends ArrayAdapter<String> {
         Switch activeSwitch;
     }
 
-    public ExerciseListAdapter(Context context, String[] values) {
+    public ExerciseListAdapter(Context context, Exercise[] values) {
         super(context, R.layout.exercise_list_item, values);
         this.context = context;
         this.values = values;
@@ -54,8 +56,8 @@ public class ExerciseListAdapter extends ArrayAdapter<String> {
         }
 
 
-        mViewHolder.titleTextView.setText(values[position]);
-        mViewHolder.descTextView.setText("Short description of the exercise");
+        mViewHolder.titleTextView.setText(values[position].getName());
+        mViewHolder.descTextView.setText(values[position].getDescription());
 
         return convertView;
     }

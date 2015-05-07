@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:paddingBottom="15dp"
+tools:context="project.boostbreak.ExercisesListFragment">
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/exercise_list_item"
+        style="@style/ExerciseListItem"
+        tools:text="Exercise"
+        android:layout_toLeftOf="@+id/active_switch"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/active_switch"
+        android:checked="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/exercise_short_desc_textView" />
+
+    <TextView
+        android:id="@+id/exercise_short_desc_textView"
+        style="@style/ExerciseListItemDescription"
+        tools:text="Short Description of the exercise"
+        android:layout_below="@+id/exercise_list_item"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/active_switch"
+        android:layout_toStartOf="@+id/active_switch" />
+
+
+</RelativeLayout>
+
+<!-- From: file:/Users/arnaud/AndroidStudioProjects/boost-break/app/src/main/res/layout/exercise_list_item.xml -->
