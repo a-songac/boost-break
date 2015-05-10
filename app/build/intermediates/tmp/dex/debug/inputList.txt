@@ -1,5 +1,0 @@
-/Users/arnaud/AndroidStudioProjects/boost-break/app/build/intermediates/classes/debug
-/Users/arnaud/AndroidStudioProjects/boost-break/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-4eeecea85a6c24c9b2002637ec88514dd55f0bf7.jar
-/Users/arnaud/AndroidStudioProjects/boost-break/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-91ef609bd70616f1c010cef397858894a5d38887.jar
-/Users/arnaud/AndroidStudioProjects/boost-break/app/build/intermediates/pre-dexed/debug/classes-912493c81f4eec85443203d1247a9f6fe73a474e.jar
-/Users/arnaud/AndroidStudioProjects/boost-break/app/build/intermediates/pre-dexed/debug/classes-17734b7da850cd0605f61704575eebe16e67611d.jar
