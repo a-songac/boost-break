@@ -40,7 +40,9 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 
-public class MainActivity extends Activity implements TimePickerDialog.OnTimeSetListener{
+public class MainActivity extends Activity
+			implements TimePickerFragment.NoticeTimePickerDialogListener{
+
 	private static final String TAG = "pause-resume";
 
     // Drawer Elements
@@ -245,7 +247,7 @@ public class MainActivity extends Activity implements TimePickerDialog.OnTimeSet
 				startButton.setChecked(false);
 				alarmManager.cancel(alarmTriggeredPendingIntent);
 				
-				DialogFragment timePickerFragment = new TimePickerFragment();
+				DialogFragment timePickerFragment = TimePickerFragment.newInstance(chosenTimeInSeconds);
 				timePickerFragment.show(getFragmentManager(), "timePicker");
 			}
 		});
@@ -381,17 +383,17 @@ public class MainActivity extends Activity implements TimePickerDialog.OnTimeSet
 
 	/**
 	 * Callback to receive time values chosen from time picker dialog
-	 * @param view
-	 * @param hourOfDay
-	 * @param minute
+	 * @param dialog
+	 * @param timeSeconds
 	 */
 	@Override
-	public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-		chosenTimeInSeconds = 60*(hourOfDay*60 + minute);
-		timeInSeconds = MainActivity.chosenTimeInSeconds;
-		timerValue.setText(setTextTime(60 * (hourOfDay * 60 + minute)));
+	public void onTimeSet(DialogFragment dialog, int timeSeconds, int hour, int minute) {
+		this.chosenTimeInSeconds = timeSeconds;
+		this.timeInSeconds = this.chosenTimeInSeconds;
+		timerValue.setText(setTextTime(60 * (hour * 60 + minute)));
 	}
-	
+
+
 	/** This Runnable iterates the time clock for the timer */
 	private Runnable updateTimerThread = new Runnable(){		
 		public void run(){

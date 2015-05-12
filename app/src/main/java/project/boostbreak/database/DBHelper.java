@@ -16,7 +16,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
-    // ExerciseOLD table creation sql statement
+    // Exercise table creation sql statement
     // todo use string builder instead
     private static final String CREATE_EXERCISE_TABLE = "CREATE TABLE "
             + DBContract.ExerciseEntry.TABLE_EXERCISES
