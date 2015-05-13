@@ -29,10 +29,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 	// Notification ID to allow for future updates
 	public static final int ALARM_NOTIFICATION_ID = 1;
 	
-	//Notification intent
-	private Intent mNotificationIntent;
-	private PendingIntent mNotificationPendingIntent;
-	
 	//vibrate pattern (permission required)
 	private long[] mVibratePattern = { 0, 200, 200, 300 };
 	//sound for the alarm
@@ -68,18 +64,18 @@ public class AlarmReceiver extends BroadcastReceiver {
 			Log.i(TAG, "Alarm received when main activity is not on foreground");
 			
 			//create intent and pending intent for the notification
-			mNotificationIntent = new Intent(context, MainActivity.class);
+			Intent mNotificationIntent = new Intent(context, MainActivity.class);
 			
 			/* Add flags that handle the case that the activity already exists but is only on stop
 			 * IOW the main activity is resumed and not started over
 			*/
 			mNotificationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                    Intent.FLAG_ACTIVITY_SINGLE_TOP);
+					Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
 			//add extra to notify that the intent must launch the exercise dialog
 			mNotificationIntent.putExtra(LAUNCH_EX_KEY, LAUNCH_EX_VALUE);
-			mNotificationPendingIntent = PendingIntent.getActivity(context, 0,	mNotificationIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+			PendingIntent mNotificationPendingIntent = PendingIntent.getActivity(context, 0,	mNotificationIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
 			
 			// Define the Notification's expanded message and Intent:
 			Notification.Builder notificationBuilder = new Notification.Builder(

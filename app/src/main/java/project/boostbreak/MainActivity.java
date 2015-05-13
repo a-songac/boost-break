@@ -8,13 +8,11 @@ package project.boostbreak;
  * TODO sort list in alphabetical order
  */
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.DialogFragment;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -35,7 +33,6 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -48,7 +45,6 @@ public class MainActivity extends Activity
     // Drawer Elements
     private String[] drawerListViewElements = {"Exercises","Statistics"};
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
     private RelativeLayout mDrawerRelativeLayout;
     private boolean drawerOpened = false;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -69,10 +65,11 @@ public class MainActivity extends Activity
 	private Handler customHandler = new Handler();
 	
 	// variables
-	public static int chosenTimeInSeconds = 5;
-	public static long momentAlarmTriggeredMillis = 0L;
-	public static long timeRemaining= 0L;
-	public static int timeInSeconds = chosenTimeInSeconds;
+	private static int chosenTimeInSeconds = 5;
+	private static long momentAlarmTriggeredMillis = 0L;
+	private static long timeRemaining= 0L;
+	private static int timeInSeconds = chosenTimeInSeconds;
+
 	public static boolean activityActive = true;
 	public static boolean inPeriod = false;
 		
@@ -99,7 +96,7 @@ public class MainActivity extends Activity
 		// initialize the views
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerRelativeLayout = (RelativeLayout) findViewById(R.id.drawer_rel_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        ListView mDrawerList = (ListView) findViewById(R.id.left_drawer);
 		timerValue = (TextView) findViewById(R.id.timerTextview);
 		startButton = (ToggleButton) findViewById(R.id.startButton);
 		resetButton = (Button) findViewById(R.id.resetButton);
@@ -115,7 +112,7 @@ public class MainActivity extends Activity
 
 
         // list adapter for drawer
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item,
+        mDrawerList.setAdapter(new ArrayAdapter<>(this,R.layout.drawer_list_item,
                 drawerListViewElements ));
         mDrawerLayout.setScrimColor(0xE0000000);
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -141,13 +138,11 @@ public class MainActivity extends Activity
                 R.string.app_name // nav drawer close - description for accessibility
         ){
             public void onDrawerClosed(View view) {
-                getActionBar().setTitle(mTitle);
                 // calling onPrepareOptionsMenu() to show action bar icons
                 invalidateOptionsMenu();
             }
 
             public void onDrawerOpened(View drawerView) {
-                getActionBar().setTitle(mDrawerTitle);
                 // calling onPrepareOptionsMenu() to hide action bar icons
                 invalidateOptionsMenu();
             }
@@ -238,8 +233,7 @@ public class MainActivity extends Activity
 		
 		// Set Time of a Work period
 		setTimeButton.setOnClickListener(new View.OnClickListener() {
-			
-			@SuppressLint("NewApi")
+
 			@Override
 			public void onClick(View v) {
 				// stop the timer and cancel the alarm
@@ -248,7 +242,7 @@ public class MainActivity extends Activity
 				alarmManager.cancel(alarmTriggeredPendingIntent);
 				
 				DialogFragment timePickerFragment = TimePickerFragment.newInstance(chosenTimeInSeconds);
-				timePickerFragment.show(getFragmentManager(), "timePicker");
+				timePickerFragment.show(getFragmentManager(), "Time Picker");
 			}
 		});
 	}
@@ -265,7 +259,7 @@ public class MainActivity extends Activity
 		// if a work period is ongoing, launch a notification that allows to directly go back to the main activity
 		if(inPeriod){
 			
-			// stop the timer clock thread (not the alarm that continues in background) when the activity goes on pause
+			// stop the timer clock thread (note that the alarm continues in background)
 			 if(startButton.isChecked())				 
 				 customHandler.removeCallbacks(updateTimerThread);
 			
@@ -274,9 +268,10 @@ public class MainActivity extends Activity
 	        //set flags to resume the main activity (and not start a new one)
 	       	ongoingPeriodIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                     Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
 	        ongoingPeriodPendingIntent = PendingIntent.getActivity(MainActivity.this, 0,
                     ongoingPeriodIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                    PendingIntent.FLAG_UPDATE_CURRENT);
 			
 	        // content of the notification
 	        NotificationCompat.Builder mBuilder = 
@@ -341,8 +336,6 @@ public class MainActivity extends Activity
 		 
 		 if(extras != null)
          {
-			 Log.i(AlarmReceiver.TAG, "Extras received");
-
 			 // only the extra with the key "lauchEx" and the content "1" can launch the exercise dialog
 			 if (extras.containsKey(AlarmReceiver.LAUNCH_EX_KEY) &&
                      extras.getInt(AlarmReceiver.LAUNCH_EX_KEY) == AlarmReceiver.LAUNCH_EX_VALUE)
@@ -355,11 +348,8 @@ public class MainActivity extends Activity
 
 				 exerciseDialog.show(getFragmentManager(), "fragment_edit_name");
 
-				 Log.i(AlarmReceiver.TAG, "Dialog launched after notification intent");
-						 
 				 extras.clear();
 
-				 Log.i(AlarmReceiver.TAG, "Extras cleared");
 			 }
 		 }else
          {
@@ -383,13 +373,13 @@ public class MainActivity extends Activity
 
 	/**
 	 * Callback to receive time values chosen from time picker dialog
-	 * @param dialog
-	 * @param timeSeconds
+	 * @param dialog instance of th dialog
+	 * @param timeSeconds time in seconds selected in the time picker
 	 */
 	@Override
 	public void onTimeSet(DialogFragment dialog, int timeSeconds, int hour, int minute) {
-		this.chosenTimeInSeconds = timeSeconds;
-		this.timeInSeconds = this.chosenTimeInSeconds;
+		chosenTimeInSeconds = timeSeconds;
+		timeInSeconds = chosenTimeInSeconds;
 		timerValue.setText(setTextTime(60 * (hour * 60 + minute)));
 	}
 
@@ -405,10 +395,19 @@ public class MainActivity extends Activity
 				timeInSeconds = chosenTimeInSeconds;
 				timerValue.setText(setTextTime(timeInSeconds));
 				
-				// otherwise a an intent from the notification will launch the dialog
-				if(activityActive)
+				// otherwise an intent from the notification will launch the dialog
+				if(activityActive){
 					exerciseDialog.show(getFragmentManager(), "fragment_edit_name");
-				
+					Log.i(TAG, "Exercise dialog launched from runnable");
+
+					//cancel the alarm notification if any
+					NotificationManager mNotificationManager =
+							(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+					mNotificationManager.cancel(AlarmReceiver.ALARM_NOTIFICATION_ID);
+
+
+				}
+
 			}else{
 			
 				// set  time shown on the clock
@@ -478,12 +477,6 @@ public class MainActivity extends Activity
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerRelativeLayout);
         menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public void setTitle(CharSequence title) {
-        mTitle = title;
-        getActionBar().setTitle(mTitle);
     }
 
     /**
