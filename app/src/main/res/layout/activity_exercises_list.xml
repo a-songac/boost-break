@@ -10,7 +10,7 @@
     <!-- "Fragment A: Exercise" -->
     <fragment
         android:id="@+id/exercises_list_frag"
-        android:name="project.boostbreak.ExercisesListFragment"
+        android:name="project.boostbreak.ui.fragment.ExercisesListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/fragment_exercises_list" />

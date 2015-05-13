@@ -11,6 +11,8 @@ import android.net.Uri;
 import android.os.Vibrator;
 import android.util.Log;
 
+import project.boostbreak.activity.MainActivity;
+
 public class AlarmReceiver extends BroadcastReceiver {
 	
 	//tag to track behavior in the logcat

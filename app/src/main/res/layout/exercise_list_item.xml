@@ -5,7 +5,7 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="wrap_content"
 android:paddingBottom="15dp"
-tools:context="project.boostbreak.ExercisesListFragment">
+tools:context="project.boostbreak.ui.fragment.ExercisesListFragment">
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/exercise_list_item"

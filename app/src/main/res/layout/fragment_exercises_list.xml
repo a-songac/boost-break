@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="project.boostbreak.ExercisesListFragment">
+    tools:context="project.boostbreak.ui.fragment.ExercisesListFragment">
 
 
     <ListView
