@@ -3,25 +3,28 @@
 
     <string name="app_name">Boost Break</string>
     <string name="action_settings">Settings</string>
-    <string name="startButton">START/RESUME</string>
-    <string name="setTimeButton">Set Time</string>
-    <string name="pauseButton">Pause</string>
-    <string name="resetButton">Reset</string>
-    <string name="stopButton">Stop</string>
+
+    <string name="timer_start_button">START/RESUME</string>
+    <string name="timer_set_time_button">Set Time</string>
+    <string name="timer_pause_button">Pause</string>
+    <string name="timer_reset_button">Reset</string>
+    <string name="timer_stop_button">Stop</string>
+    <string name="timer_in">in</string>
+
+
     <string name="logo_description">Logo of the app project</string>
-    <string name="textview_work_time_left">Next break in</string>
-    <string name="txtview_break_time_left">Break ends in</string>
+    <string name="break_time_remaining">Next break in</string>
+    <string name="break_time_remaining1">Break ends in</string>
     <string name="chronometer">Chronometer</string>
-    <string name="timeTextview">00:00:00</string>
-    <string name="inTextview">in</string>
-    <string name="exerciseName">Exercise:</string>
-    <string name="exerciseDuration">Duration: </string>
-    <string name="exerciseDescription">Description: </string>
-    <string name="title_activity_exercises_list">Exercises</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_statistics">Stats</string>
+    <string name="time_zero">00:00:00</string>
 
     <string name="exercise_action_add">Add</string>
+    <string name="exercise_name">Exercise:</string>
+    <string name="exercise_duration">Duration: </string>
+    <string name="exercise_description">Description: </string>
+
+    <string name="title_activity_exercises_list">Exercises</string>
+    <string name="title_activity_statistics">Stats</string>
+
 
 </resources>

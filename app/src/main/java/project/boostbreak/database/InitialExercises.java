@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by arnaud on 15-05-07.
+ * Class to initialize the exercise table from the db
  */
 public class InitialExercises {
     public static List<ContentValues> getExercises(){

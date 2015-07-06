@@ -9,7 +9,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import project.boostbreak.R;
-import project.boostbreak.database.Exercise;
+import project.boostbreak.model.Exercise;
 
 public class ExerciseListAdapter extends ArrayAdapter<Exercise> {
     private final Context context;

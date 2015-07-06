@@ -3,7 +3,7 @@ package project.boostbreak.database;
 import android.provider.BaseColumns;
 
 /**
- * Created by arnaud on 15-05-05.
+ * Class to implement db contract
  */
 public class DBContract {
 

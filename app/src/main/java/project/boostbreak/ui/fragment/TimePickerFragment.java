@@ -1,23 +1,19 @@
 package project.boostbreak.ui.fragment;
 
-
-import android.app.Activity;
 import android.app.Dialog;
-import android.app.DialogFragment;
+import android.support.v4.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TimePicker;
+
+import project.boostbreak.helper.NavigationHelper;
 
 public class TimePickerFragment extends DialogFragment
 		implements TimePickerDialog.OnTimeSetListener {
 
-	// callback interface for host activity
-	public interface NoticeTimePickerDialogListener {
-		void onTimeSet(DialogFragment dialog, int timeSeconds, int hour, int minute);
-	}
 
-	private Activity mActivity;
-	private NoticeTimePickerDialogListener mListener;
+
 	private static final String TIME_SECONDS = "timeInSeconds";
 
 
@@ -30,19 +26,6 @@ public class TimePickerFragment extends DialogFragment
 		return fragment;
 	}
 
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		mActivity = activity;
-
-		// This error will remind you to implement an OnTimeSetListener
-		//   in your Activity if you forget
-		try {
-			mListener = (NoticeTimePickerDialogListener) activity;
-		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString() + " must implement OnTimeSetListener");
-		}
-	}
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -53,17 +36,24 @@ public class TimePickerFragment extends DialogFragment
 		int hour = timeInSeconds / 3600;
 		int minute = (timeInSeconds / 60) % 60;
 
-		/* Create a new instance of TimePickerDialog and return it
-		 * Set true for 24hour format */
 		return new TimePickerDialog(getActivity(), this, hour, minute,
 				true);
 	}
 	
 	@Override
 	public void onTimeSet(TimePicker view, int hour, int minute) {
-		//when time is set, send it to the timer through the callback interface
 		int timeSeconds = 60 * (hour * 60 + minute);
-		mListener.onTimeSet(TimePickerFragment.this, timeSeconds, hour, minute);
+
+		try {
+
+			TimerFragment fragment = TimerFragment.class.cast(
+                    NavigationHelper.getInstance().getContainerFragment());
+            fragment.onTimeSet(timeSeconds);
+
+
+		} catch (ClassCastException e) {
+			Log.e("ERROR", "Timer Fragment does not implement TimePickerDialogCallBack interface");
+		}
 
 
 	}

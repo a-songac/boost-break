@@ -10,7 +10,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textView1"
         android:layout_marginLeft="24dp"
-        android:text="@string/exerciseDuration"
+        android:text="@string/exercise_duration"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
@@ -20,7 +20,7 @@
         android:layout_below="@+id/textView2"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:text="@string/exerciseDescription"
+        android:text="@string/exercise_description"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
@@ -39,7 +39,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/textView2"
         android:layout_marginTop="20dp"
-        android:text="@string/exerciseName"
+        android:text="@string/exercise_name"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView

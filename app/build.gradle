@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "project.boostbreak"
-        minSdkVersion 16
+        minSdkVersion 18
         targetSdkVersion 21
     }
 

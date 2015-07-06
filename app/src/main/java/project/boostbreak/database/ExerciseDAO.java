@@ -9,8 +9,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import project.boostbreak.model.Exercise;
+
 /**
- * Created by arnaud on 15-05-07.
+ * Class to implement exercise DAO
  */
 public class ExerciseDAO {
 
@@ -38,8 +40,8 @@ public class ExerciseDAO {
 
 
     /**
-     * Retrieve all exercies from the db
-     * @return
+     * Retrieve all exercises from the db
+     * @return List<Exercise> : List of all exercises
      */
     public List<Exercise> getAllExercises() {
 

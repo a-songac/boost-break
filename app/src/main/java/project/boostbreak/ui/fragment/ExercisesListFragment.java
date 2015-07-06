@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import project.boostbreak.R;
-import project.boostbreak.database.Exercise;
+import project.boostbreak.model.Exercise;
 import project.boostbreak.database.ExerciseDAO;
 import project.boostbreak.ui.adapter.ExerciseListAdapter;
 

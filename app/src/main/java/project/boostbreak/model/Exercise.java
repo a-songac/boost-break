@@ -1,7 +1,7 @@
-package project.boostbreak.database;
+package project.boostbreak.model;
 
 /**
- * Created by arnaud on 15-05-07.
+ * Class to implement exercise model
  */
 public class Exercise {
 
