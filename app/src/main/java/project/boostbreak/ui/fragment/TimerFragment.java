@@ -138,7 +138,7 @@ public class TimerFragment extends Fragment implements TimePickerCallBack, BaseF
             viewBinder.resetTimer(timeInSeconds);
 
         }
-        
+
         viewHolder.getDrawerLayout().closeDrawer(Gravity.START);
     }
 

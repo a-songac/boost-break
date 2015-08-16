@@ -39,16 +39,18 @@ public class ExercisesListFragment extends ListFragment implements BaseFragment{
 
         ActionBarHelper.getInstance().setExerciseFragmentActionBar();
 
-        ExerciseDAO mExerciseDAO = new ExerciseDAO(getActivity());
+        ExerciseDAO exerciseDAO = new ExerciseDAO(getActivity());
         try{
-            mExerciseDAO.open();
+            exerciseDAO.open();
 
-            List<Exercise> exerciseList = mExerciseDAO.getAllExercises();
+            List<Exercise> exerciseList = exerciseDAO.getAllExercises();
 
             mListAdapter = new ExerciseListAdapter(
                     getActivity(),
                     exerciseList);
             setListAdapter(mListAdapter);
+
+            exerciseDAO.close();
 
         }catch (SQLException e){
             LogUtils.error(this.getClass(), "onActivityCreated", "Unable to open exerciseDAO");

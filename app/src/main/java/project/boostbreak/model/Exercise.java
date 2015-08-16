@@ -11,6 +11,7 @@ public class Exercise {
     private int category;
 
     // order is linked to integer id of a category in the db
+    //TODO String array resource
     public static final String[] categoryArr = {"Upper Body", "Lower Body", "stamina", "stretching"};
 
     public long getId() {
