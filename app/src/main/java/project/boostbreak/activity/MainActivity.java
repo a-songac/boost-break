@@ -19,6 +19,7 @@ import java.util.List;
 
 import project.boostbreak.R;
 import project.boostbreak.application.BoostBreakApplication;
+import project.boostbreak.helper.ActionBarHelper;
 import project.boostbreak.helper.ConstantsHelper;
 import project.boostbreak.helper.NavigationHelper;
 import project.boostbreak.helper.NotificationHelper;
@@ -31,6 +32,12 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         BoostBreakApplication.setGlobalContext(this);
+
+        /*
+         * Set Helpers
+         */
+        ActionBarHelper.getInstance().setActionBar(this.getActionBar());
+
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState == null) {

@@ -1,25 +1,28 @@
 package project.boostbreak.ui.fragment;
 
-import android.app.ListFragment;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 
 import java.sql.SQLException;
 import java.util.List;
 
 import project.boostbreak.R;
-import project.boostbreak.model.Exercise;
 import project.boostbreak.database.ExerciseDAO;
+import project.boostbreak.helper.ActionBarHelper;
+import project.boostbreak.model.Exercise;
 import project.boostbreak.ui.adapter.ExerciseListAdapter;
+import project.boostbreak.ui.core.BaseFragment;
+import project.boostbreak.ui.view.LogUtils;
 
-public class ExercisesListFragment extends ListFragment {
+public class ExercisesListFragment extends ListFragment implements BaseFragment{
 
 
     // The list adapter for the list we are displaying
-    ArrayAdapter<Exercise> mListAdapter;
+    ExerciseListAdapter mListAdapter;
 
 
     @Override
@@ -32,26 +35,41 @@ public class ExercisesListFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        setHasOptionsMenu(true);
+
+        ActionBarHelper.getInstance().setExerciseFragmentActionBar();
+
         ExerciseDAO mExerciseDAO = new ExerciseDAO(getActivity());
         try{
             mExerciseDAO.open();
+
+            List<Exercise> exerciseList = mExerciseDAO.getAllExercises();
+
+            mListAdapter = new ExerciseListAdapter(
+                    getActivity(),
+                    exerciseList);
+            setListAdapter(mListAdapter);
+
         }catch (SQLException e){
+            LogUtils.error(this.getClass(), "onActivityCreated", "Unable to open exerciseDAO");
             e.printStackTrace();
-            // todo handle properly the exception
-            System.exit(0);
         }
-
-        List<Exercise> exerciseList = mExerciseDAO.getAllExercises();
-
-        ArrayAdapter<Exercise> adapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.activity_list_item, exerciseList);
-        setListAdapter(adapter);
-
-        mListAdapter = new ExerciseListAdapter(getActivity(), exerciseList.toArray(new Exercise[exerciseList.size()]));
-        setListAdapter(mListAdapter);
-
-
 
     }
 
+    @Override
+    public void onBackPressed() {
+        getActivity().getSupportFragmentManager().popBackStack();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }

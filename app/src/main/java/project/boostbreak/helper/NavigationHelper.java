@@ -11,6 +11,7 @@ import project.boostbreak.R;
 import project.boostbreak.activity.MainActivity;
 import project.boostbreak.application.BoostBreakApplication;
 import project.boostbreak.ui.fragment.ExerciseDialogFragment;
+import project.boostbreak.ui.fragment.ExercisesListFragment;
 import project.boostbreak.ui.fragment.TimePickerFragment;
 import project.boostbreak.ui.fragment.TimerFragment;
 
@@ -56,9 +57,19 @@ public class NavigationHelper {
 
     public  void navigateToExerciseListFragment() {
 
+        replaceFragment(
+                new ExercisesListFragment(),
+                true,
+                true,
+                null,
+                null
+        );
+
     }
 
     public void navigateToStatisticsFragment() {
+
+
 
     }
 
@@ -100,7 +111,7 @@ public class NavigationHelper {
      * @param backStackEntryName : back stack entry name
      */
     private void replaceFragment(Fragment fragment, boolean withTransition, boolean addToBackStack, 
-                                 String tag, String backStackEntryName) {
+                                @Nullable String tag, @Nullable String backStackEntryName) {
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.container, fragment, tag);
@@ -108,7 +119,9 @@ public class NavigationHelper {
             fragmentTransaction.addToBackStack(backStackEntryName);
         }
         if (withTransition) {
-            // todo transition
+            fragmentTransaction.setCustomAnimations(
+                    android.R.anim.fade_in,
+                    android.R.anim.slide_out_right);
         }
 
         fragmentTransaction.commit();

@@ -6,9 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,11 +20,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 
-import project.boostbreak.broadcastreceiver.AlarmReceiver;
 import project.boostbreak.R;
-import project.boostbreak.activity.ExercisesListActivity;
-import project.boostbreak.activity.StatisticsActivity;
+import project.boostbreak.broadcastreceiver.AlarmReceiver;
 import project.boostbreak.callback.TimePickerCallBack;
+import project.boostbreak.helper.ActionBarHelper;
 import project.boostbreak.helper.ConstantsHelper;
 import project.boostbreak.helper.NavigationHelper;
 import project.boostbreak.helper.NotificationHelper;
@@ -100,6 +100,8 @@ public class TimerFragment extends Fragment implements TimePickerCallBack, BaseF
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        ActionBarHelper.getInstance().setTimerFragmentActionBar();
+
         setHasOptionsMenu(true);
 
         this.viewHolder = new TimerFragmentViewHolder(getView());
@@ -114,9 +116,6 @@ public class TimerFragment extends Fragment implements TimePickerCallBack, BaseF
         this.setResetButtonBehaviour();
         this.setSetTimeButtonBehaviour();
         this.setNavigationDrawer();
-
-
-
 
     }
 
@@ -139,7 +138,8 @@ public class TimerFragment extends Fragment implements TimePickerCallBack, BaseF
             viewBinder.resetTimer(timeInSeconds);
 
         }
-
+        
+        viewHolder.getDrawerLayout().closeDrawer(Gravity.START);
     }
 
     @Override
@@ -299,9 +299,6 @@ public class TimerFragment extends Fragment implements TimePickerCallBack, BaseF
     private void setNavigationDrawer() {
 
         // todo: resources (string array)
-
-        final Intent exerciseListIntent =  new Intent(getActivity(), ExercisesListActivity.class);
-        final Intent statsIntent =  new Intent(getActivity(), StatisticsActivity.class);
         final String[] drawerListViewElements = {"Exercises","Statistics"};
 
         // list adapter for drawer
@@ -311,24 +308,23 @@ public class TimerFragment extends Fragment implements TimePickerCallBack, BaseF
                         R.layout.drawer_list_item,
                         drawerListViewElements)
         );
+
         viewHolder.getDrawerLayout().setScrimColor(0xE0000000);
         viewHolder.getDrawerList().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        startActivity(exerciseListIntent);
+                        NavigationHelper.getInstance().navigateToExerciseListFragment();
                         break;
+
                     case 1:
-                        startActivity(statsIntent);
+                        NavigationHelper.getInstance().navigateToStatisticsFragment();
+                        break;
+
                 }
             }
         });
-
-        // enabling action bar app icon and behaving it as toggle button for the drawer
-        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActivity().getActionBar().setHomeButtonEnabled(true);
-        getActivity().getActionBar().setHomeAsUpIndicator(R.drawable.ic_drawer);
 
         this.drawerToggle = new ActionBarDrawerToggle(
                 getActivity(),
@@ -350,7 +346,7 @@ public class TimerFragment extends Fragment implements TimePickerCallBack, BaseF
     }
 
     /**
-     * This Runnable iterates the time clock for the timer
+     * Runnable to decrement the timer clock for the timer
      **/
     private Runnable updateTimerThread = new Runnable(){
         public void run(){

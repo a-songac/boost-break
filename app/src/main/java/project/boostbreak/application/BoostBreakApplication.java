@@ -2,7 +2,8 @@ package project.boostbreak.application;
 
 import android.app.Application;
 import android.content.Context;
-import android.util.Log;
+
+import project.boostbreak.ui.view.LogUtils;
 
 /**
  * Class to implement boost break application
@@ -17,7 +18,7 @@ public class BoostBreakApplication extends Application{
     public void onCreate() {
         super.onCreate();
         GLOBAL_CONTEXT = getApplicationContext();
-        Log.d("DEBUG", "Global context: " + GLOBAL_CONTEXT);
+        LogUtils.debug(this.getClass(), "onCreate", "Global context: " + GLOBAL_CONTEXT);
 
     }
 
