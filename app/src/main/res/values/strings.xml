@@ -4,6 +4,7 @@
     <string name="app_name">Boost Break</string>
     <string name="action_settings">Settings</string>
 
+    <!-- Timer Fragment -->
     <string name="timer_start_button">START/RESUME</string>
     <string name="timer_set_time_button">Set Time</string>
     <string name="timer_pause_button">Pause</string>
@@ -18,13 +19,31 @@
     <string name="chronometer">Chronometer</string>
     <string name="time_zero">00:00:00</string>
 
+    <string name="title_activity_exercises_list">Exercises</string>
+    <string name="title_activity_statistics">Stats</string>
+
+    <!-- Exercise Fragment -->
     <string name="exercise_action_add">Add</string>
     <string name="exercise_name">Exercise:</string>
     <string name="exercise_duration">Duration: </string>
     <string name="exercise_description">Description: </string>
+    <string-array name="exercise_category">
+        <item>Upper Body</item>
+        <item>Lower Body</item>
+        <item>Endurance</item>
+        <item>Stretching</item>
+    </string-array>
 
-    <string name="title_activity_exercises_list">Exercises</string>
-    <string name="title_activity_statistics">Stats</string>
+
+    <!-- Exercise List Fragment -->
+    <string name="exercise_list_add_dialog_titile">Add Exercise</string>
+    <string name="add_exercise_form_error">Empty or invalid fields</string>
+
+
+    <!-- Global -->
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">Ok</string>
 
 
 </resources>

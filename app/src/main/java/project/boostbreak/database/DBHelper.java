@@ -5,10 +5,19 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import project.boostbreak.application.BoostBreakApplication;
+
 /**
  * Class to implement db helper
  */
 public class DBHelper extends SQLiteOpenHelper {
+
+    // Singleton instance
+    private static DBHelper INSTANCE = new DBHelper(BoostBreakApplication.getGlobalContext().getApplicationContext());
+    public static DBHelper getInstance(){
+        return INSTANCE;
+    }
+
 
     // If you change the database schema, you must increment the database version.
     private static final int DATABASE_VERSION = 1;
@@ -24,11 +33,12 @@ public class DBHelper extends SQLiteOpenHelper {
             + DBContract.ExerciseEntry.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + DBContract.ExerciseEntry.COLUMN_NAME + " TEXT NOT NULL, "
             + DBContract.ExerciseEntry.COLUMN_DESCRIPTION + " TEXT NOT NULL, "
-            + DBContract.ExerciseEntry.COLUMN_CATEGORY + " INT NOT NULL"
+            + DBContract.ExerciseEntry.COLUMN_CATEGORY + " INT NOT NULL, "
+            + DBContract.ExerciseEntry.COLUMN_ENABLED + " INT DEFAULT 1"
             + ");";
 
 
-    public DBHelper(Context context){
+    private DBHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

@@ -1,18 +1,23 @@
 package project.boostbreak.ui.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import project.boostbreak.R;
+import project.boostbreak.database.ExerciseDAO;
 import project.boostbreak.model.Exercise;
 import project.boostbreak.ui.core.BaseViewHolder;
+import project.boostbreak.ui.view.LogUtils;
 
 /**
  * Exercise List Adapter
@@ -28,7 +33,7 @@ public class ExerciseListAdapter extends ArrayAdapter<Exercise> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         ViewHolder viewHolder;
 
@@ -48,6 +53,24 @@ public class ExerciseListAdapter extends ArrayAdapter<Exercise> {
 
         viewHolder.titleTextView.setText(values.get(position).getName());
         viewHolder.descTextView.setText(values.get(position).getDescription());
+        viewHolder.activeSwitch.setChecked(values.get(position).isEnabled());
+        viewHolder.activeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Exercise exercise = getItem(position);
+                exercise.setEnabled(isChecked);
+                ExerciseDAO exerciseDAO = ExerciseDAO.getInstance();
+                try{
+
+                    exerciseDAO.open();
+                    exerciseDAO.updateExercise(exercise);
+                    exerciseDAO.close();
+
+                }catch (SQLException e){
+                    LogUtils.error(this.getClass(), "getView", "Unable to open exerciseDAO: " + Log.getStackTraceString(e));
+                }
+            }
+        });
 
         return convertView;
     }

@@ -19,6 +19,7 @@ public class DBContract {
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_DESCRIPTION = "description";
         public static final String COLUMN_CATEGORY = "category";
+        public static final String COLUMN_ENABLED = "enabled";
 
         public static final Integer UPPER_BODY = 0;
         public static final Integer LOWER_BODY = 1;

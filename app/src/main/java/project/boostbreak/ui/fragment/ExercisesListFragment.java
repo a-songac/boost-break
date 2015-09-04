@@ -3,6 +3,8 @@ package project.boostbreak.ui.fragment;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import java.util.List;
 import project.boostbreak.R;
 import project.boostbreak.database.ExerciseDAO;
 import project.boostbreak.helper.ActionBarHelper;
+import project.boostbreak.helper.AlertDialogHelper;
 import project.boostbreak.model.Exercise;
 import project.boostbreak.ui.adapter.ExerciseListAdapter;
 import project.boostbreak.ui.core.BaseFragment;
@@ -22,7 +25,9 @@ public class ExercisesListFragment extends ListFragment implements BaseFragment{
 
 
     // The list adapter for the list we are displaying
-    ExerciseListAdapter mListAdapter;
+    private ExerciseListAdapter listAdapter;
+    private  List<Exercise> exerciseList;
+    private ExerciseDAO exerciseDAO = ExerciseDAO.getInstance();
 
 
     @Override
@@ -39,16 +44,13 @@ public class ExercisesListFragment extends ListFragment implements BaseFragment{
 
         ActionBarHelper.getInstance().setExerciseFragmentActionBar();
 
-        ExerciseDAO exerciseDAO = new ExerciseDAO(getActivity());
         try{
             exerciseDAO.open();
-
-            List<Exercise> exerciseList = exerciseDAO.getAllExercises();
-
-            mListAdapter = new ExerciseListAdapter(
+            exerciseList = exerciseDAO.getAllExercises();
+            listAdapter = new ExerciseListAdapter(
                     getActivity(),
                     exerciseList);
-            setListAdapter(mListAdapter);
+            setListAdapter(listAdapter);
 
             exerciseDAO.close();
 
@@ -65,11 +67,38 @@ public class ExercisesListFragment extends ListFragment implements BaseFragment{
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        inflater.inflate(R.menu.menu_exercises_list, menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
                 onBackPressed();
                 return true;
+
+            case R.id.add_exercise:
+
+                AlertDialogHelper.addExerciseAlertDialog(new ExerciseAdditionCallBack() {
+                    @Override
+                    public void onNewExerciseAdded() {
+
+                        try{
+                            exerciseDAO.open();
+                            exerciseList.clear();
+                            exerciseList.addAll(exerciseDAO.getAllExercises());
+                            listAdapter.notifyDataSetChanged();
+                            exerciseDAO.close();
+                        }catch (SQLException e){
+                            LogUtils.error(this.getClass(), "onActivityCreated", "Unable to open exerciseDAO");
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+                return  true;
         }
 
         return super.onOptionsItemSelected(item);

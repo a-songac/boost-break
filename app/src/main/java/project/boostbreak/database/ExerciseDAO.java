@@ -1,7 +1,6 @@
 package project.boostbreak.database;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -18,19 +17,26 @@ import project.boostbreak.ui.view.LogUtils;
  */
 public class ExerciseDAO {
 
+    //TODO should I?
+    //SingletonInstance
+    private static ExerciseDAO INSTANCE = new ExerciseDAO();
+    public static ExerciseDAO getInstance(){
+        return INSTANCE;
+    }
+
+
     // Database fields
     private SQLiteDatabase db;
-    private DBHelper dbHelper;
+    private DBHelper dbHelper = DBHelper.getInstance();
     private String[] exerciseTableColumns = {
             DBContract.ExerciseEntry.COLUMN_ID,
             DBContract.ExerciseEntry.COLUMN_NAME,
             DBContract.ExerciseEntry.COLUMN_DESCRIPTION,
-            DBContract.ExerciseEntry.COLUMN_CATEGORY
+            DBContract.ExerciseEntry.COLUMN_CATEGORY,
+            DBContract.ExerciseEntry.COLUMN_ENABLED
             };
 
-    public ExerciseDAO(Context context){
-        dbHelper = new DBHelper(context);
-    }
+    private ExerciseDAO(){}
 
     public void open() throws SQLException {
         db = dbHelper.getWritableDatabase();
@@ -73,8 +79,8 @@ public class ExerciseDAO {
 
     /**
      * Extract the db columns to create exercise object
-     * @param cursor
-     * @return Exercise
+     * @param cursor : cursor
+     * @return Exercise : exercise
      */
     private Exercise cursorToExercise(Cursor cursor){
         Exercise exercise  = new Exercise();
@@ -82,6 +88,7 @@ public class ExerciseDAO {
         exercise.setName(cursor.getString(1));
         exercise.setDescription(cursor.getString(2));
         exercise.setCategory(cursor.getInt(3));
+        exercise.setEnabled(cursor.getInt(4) == 1);
 
         return exercise;
     }
@@ -98,6 +105,7 @@ public class ExerciseDAO {
         newExercise.put(DBContract.ExerciseEntry.COLUMN_NAME, name);
         newExercise.put(DBContract.ExerciseEntry.COLUMN_DESCRIPTION, description);
         newExercise.put(DBContract.ExerciseEntry.COLUMN_CATEGORY, category);
+        newExercise.put(DBContract.ExerciseEntry.COLUMN_ENABLED, 1);
 
         long insertId = db.insert(DBContract.ExerciseEntry.TABLE_EXERCISES, null, newExercise);
 
@@ -110,13 +118,12 @@ public class ExerciseDAO {
                 null,
                 null);
         cursor.moveToFirst();
-        Exercise exercise = this.cursorToExercise(cursor);
 
-        return exercise;
+        return this.cursorToExercise(cursor);
     }
 
     /**
-     * Delet exercise from db
+     * Delete exercise from db
      * @param exercise : exercise to delete
      */
     public void deleteExercise(Exercise exercise) {
@@ -127,6 +134,28 @@ public class ExerciseDAO {
                 DBContract.ExerciseEntry.COLUMN_ID + "=" + id,
                 null
         );
+    }
+
+    /**
+     * Modify existing exercise
+     * @param exercise : exercise modified
+     */
+    public void updateExercise(Exercise exercise) {
+
+        ContentValues exerciseValue = new ContentValues();
+
+        int boolInt = exercise.isEnabled() ? 1 : 0;
+
+        exerciseValue.put(DBContract.ExerciseEntry.COLUMN_NAME, exercise.getName());
+        exerciseValue.put(DBContract.ExerciseEntry.COLUMN_DESCRIPTION, exercise.getDescription());
+        exerciseValue.put(DBContract.ExerciseEntry.COLUMN_CATEGORY, exercise.getCategory());
+        exerciseValue.put(DBContract.ExerciseEntry.COLUMN_ENABLED, boolInt);
+
+        db.update(
+                DBContract.ExerciseEntry.TABLE_EXERCISES,
+                exerciseValue,
+                DBContract.ExerciseEntry.COLUMN_ID + "=" + exercise.getId(),
+                null);
 
     }
 

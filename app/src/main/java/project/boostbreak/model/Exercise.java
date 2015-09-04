@@ -9,10 +9,23 @@ public class Exercise {
     private String name;
     private String description;
     private int category;
+    private boolean enabled;
 
     // order is linked to integer id of a category in the db
     //TODO String array resource
     public static final String[] categoryArr = {"Upper Body", "Lower Body", "stamina", "stretching"};
+
+    /**
+     * Default constructor
+     */
+    public Exercise() {
+        this.id = -1;
+        this.name = "";
+        this.description = "";
+        this.category = 0;
+        this.enabled = true;
+    }
+
 
     public long getId() {
         return id;
@@ -44,6 +57,14 @@ public class Exercise {
 
     public void setCategory(int category) {
         this.category = category;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override
