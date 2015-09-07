@@ -169,7 +169,7 @@ public class TimerFragment extends Fragment implements TimePickerCallBack, BaseF
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.main, menu);
+        inflater.inflate(R.menu.main_menu, menu);
     }
 
 

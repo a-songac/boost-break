@@ -13,7 +13,7 @@
         android:name="project.boostbreak.ui.fragment.ExercisesListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout="@layout/fragment_exercises_list" />
+        tools:layout="@layout/exercise_list_fragment" />
 
 
 </LinearLayout>

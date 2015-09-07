@@ -2,12 +2,15 @@ package project.boostbreak.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -24,16 +27,61 @@ import project.boostbreak.ui.view.LogUtils;
 public class ExercisesListFragment extends ListFragment implements BaseFragment{
 
 
-    // The list adapter for the list we are displaying
     private ExerciseListAdapter listAdapter;
     private  List<Exercise> exerciseList;
     private ExerciseDAO exerciseDAO = ExerciseDAO.getInstance();
+
+    private ActionMode actionMode = null;
+    private int itemsSelected = 0;
+
+    /**
+     * Action mode call back for list items multi choice mode
+     */
+    private AbsListView.MultiChoiceModeListener actionModeCallBack = new AbsListView.MultiChoiceModeListener() {
+        @Override
+        public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+
+        }
+
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.exercises_list_action_mode_menu, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.delete_exercises:
+                    //TODO
+                    break;
+                case R.id.modify_exercises:
+                    //TODO
+                    break;
+            }
+
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            actionMode = null;
+            itemsSelected = 0;
+            listAdapter.clearSelection();
+            listAdapter.notifyDataSetChanged();
+        }
+    };
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_exercises_list, container, false);
+        return inflater.inflate(R.layout.exercise_list_fragment, container, false);
     }
 
     @Override
@@ -42,7 +90,7 @@ public class ExercisesListFragment extends ListFragment implements BaseFragment{
 
         setHasOptionsMenu(true);
 
-        ActionBarHelper.getInstance().setExerciseFragmentActionBar();
+        ActionBarHelper.getInstance().setExerciseListFragmentActionBar();
 
         try{
             exerciseDAO.open();
@@ -59,6 +107,12 @@ public class ExercisesListFragment extends ListFragment implements BaseFragment{
             e.printStackTrace();
         }
 
+        // Set action mode
+        getListView().setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
+        setListItemLongClickBehaviours();
+        setListItemClickListener();
+        getListView().setMultiChoiceModeListener(actionModeCallBack);
+
     }
 
     @Override
@@ -69,7 +123,7 @@ public class ExercisesListFragment extends ListFragment implements BaseFragment{
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
-        inflater.inflate(R.menu.menu_exercises_list, menu);
+        inflater.inflate(R.menu.exercises_list_menu, menu);
     }
 
     @Override
@@ -103,4 +157,83 @@ public class ExercisesListFragment extends ListFragment implements BaseFragment{
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    /**
+     * Set on list item long click behaviour
+     */
+    private void setListItemLongClickBehaviours() {
+
+        this.getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                if (actionMode == null) {
+
+                    actionMode = getActivity().startActionMode(actionModeCallBack);
+                    listAdapter.setItemSelected(position, true);
+                    itemsSelected++;
+
+                } else {
+                    manageSelectionInActionMode(position);
+                }
+
+                updateActionBar();
+                return true;
+            }
+        });
+
+    }
+
+    /**
+     * Set on list item click behaviour
+     */
+    private void setListItemClickListener() {
+        this.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                manageSelectionInActionMode(position);
+                updateActionBar();
+
+            }
+        });
+    }
+
+    /**
+     * Handle item selection in action mode
+     * @param position : item position
+     */
+    private void manageSelectionInActionMode(int position) {
+
+        if (actionMode != null) {
+            if (listAdapter.isItemSelected(position)) {
+
+                listAdapter.setItemSelected(position, false);
+                itemsSelected--;
+
+                if (itemsSelected == 0) {
+                    actionMode.finish();
+                }
+
+            } else {
+
+                listAdapter.setItemSelected(position, true);
+                itemsSelected++;
+
+            }
+        }
+    }
+
+    /**
+     * Update action bar after selection changes
+     */
+    private void updateActionBar() {
+        if (actionMode != null) {
+            actionMode.getMenu().getItem(0).setVisible(itemsSelected == 1);
+            actionMode.setTitle(itemsSelected + " Selected");
+
+        }
+    }
+
 }

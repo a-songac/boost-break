@@ -35,7 +35,7 @@ public class NavigationHelper {
     }
 
     /**
-     * Navigate to main fragment
+     * Navigate to main_menu fragment
      */
     public void navigateToMainFragment() {
         navigateToTimerFragment();
@@ -95,7 +95,7 @@ public class NavigationHelper {
     }
 
     /**
-     * Get fragment in the main activity frame layout container
+     * Get fragment in the main_menu activity frame layout container
      * @return Fragment : fragment currently
      */
     public Fragment getContainerFragment() {

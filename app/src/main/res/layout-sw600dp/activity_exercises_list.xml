@@ -14,7 +14,7 @@
         android:layout_width="0dp"
         android:layout_weight="0.50"
         android:layout_height="match_parent"
-        tools:layout="@layout/fragment_exercises_list" />
+        tools:layout="@layout/exercise_list_fragment" />
 
     <!-- "Fragment B: Exercise Description" -->
     <fragment
@@ -23,6 +23,6 @@
         android:layout_width="wrap_content"
         android:layout_weight="0.50"
         android:layout_height="match_parent"
-        tools:layout="@layout/fragment_exercise_description"/>
+        tools:layout="@layout/exercise_description_fragment"/>
 
 </LinearLayout>

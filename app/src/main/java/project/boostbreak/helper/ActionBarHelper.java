@@ -41,7 +41,10 @@ public class ActionBarHelper {
 
     }
 
-    public void setExerciseFragmentActionBar() {
+    /**
+     * Set exercise List fragment action bar
+     */
+    public void setExerciseListFragmentActionBar() {
 
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);

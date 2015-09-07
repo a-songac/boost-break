@@ -38,12 +38,15 @@
     <!-- Exercise List Fragment -->
     <string name="exercise_list_add_dialog_titile">Add Exercise</string>
     <string name="add_exercise_form_error">Empty or invalid fields</string>
+    <string name="exercises_selected_count">count</string>
 
 
     <!-- Global -->
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="ok">Ok</string>
+    <string name="delete">Delete</string>
+    <string name="modify">Modify</string>
 
 
 </resources>

@@ -1,7 +1,9 @@
 package project.boostbreak.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,19 +25,26 @@ import project.boostbreak.ui.view.LogUtils;
  * Exercise List Adapter
  */
 public class ExerciseListAdapter extends ArrayAdapter<Exercise> {
+
     private final Context context;
     private final List<Exercise> values;
+    private ViewHolder viewHolder;
+    private SparseBooleanArray selectedItems;
 
+    /**
+     * Constructor
+     * @param context : context of activity
+     * @param items : items of the list
+     */
     public ExerciseListAdapter(Context context, List<Exercise> items) {
         super(context, R.layout.exercise_list_item, items);
         this.context = context;
         this.values = items;
+        selectedItems = new SparseBooleanArray(items.size());
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-
-        ViewHolder viewHolder;
 
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater) context
@@ -72,7 +81,41 @@ public class ExerciseListAdapter extends ArrayAdapter<Exercise> {
             }
         });
 
+        int color =  selectedItems.get(position)? Color.LTGRAY : Color.TRANSPARENT;
+        viewHolder.getViewHolder().setBackgroundColor(color);
+
         return convertView;
+    }
+
+    /**
+     * Set selection of list item
+     * @param position : position of list item
+     * @param selected : whether item is selected
+     */
+    public void setItemSelected(int position, boolean selected) {
+        selectedItems.put(position, selected);
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Whether list item is selected
+     * @param position : position of list item
+     * @return boolean : Returns true if item is selected
+     */
+    public boolean isItemSelected(int position) {
+        return selectedItems.get(position, false);
+    }
+
+    /**
+     * Unselect all list items
+     */
+    public void clearSelection() {
+        selectedItems.clear();
+        notifyDataSetChanged();
+    }
+
+    public SparseBooleanArray getSelectedItems() {
+        return selectedItems;
     }
 
 
