@@ -12,7 +12,7 @@ import project.boostbreak.ui.core.BaseViewHolder;
 import project.boostbreak.ui.view.holder.AddExerciseFormViewHolder;
 
 /**
- * Class to implement add exercise form view binder
+ * Class to implement add exercise or modify exercise form view binder
  */
 public class AddExerciseFormViewBinder extends BaseViewBinder {
 
@@ -42,6 +42,20 @@ public class AddExerciseFormViewBinder extends BaseViewBinder {
     }
 
     /**
+     * Bind data to view
+     * @param exercise : exercise
+     */
+    public void bind(Exercise exercise) {
+        bind();
+        Context context = BoostBreakApplication.getGlobalContext();
+
+        viewHolder.getExerciseName().setText(exercise.getName());
+        viewHolder.getExerciseDescription().setText(exercise.getDescription());
+        viewHolder.getExerciseCategory().setSelection(exercise.getCategory());
+
+    }
+
+    /**
      * Retrieve form data and create an exercise item
      * @return Exercise: Newly created exercise
      */
@@ -51,6 +65,12 @@ public class AddExerciseFormViewBinder extends BaseViewBinder {
         newExercise.setDescription(viewHolder.getExerciseDescription().getText().toString());
         newExercise.setCategory(viewHolder.getExerciseCategory().getSelectedItemPosition());
         return newExercise;
+    }
+
+    public void updateExercise(Exercise exercise) {
+        exercise.setName(viewHolder.getExerciseName().getText().toString());
+        exercise.setDescription(viewHolder.getExerciseDescription().getText().toString());
+        exercise.setCategory(viewHolder.getExerciseCategory().getSelectedItemPosition());
     }
 
     /**

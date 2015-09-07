@@ -39,6 +39,11 @@
     <string name="exercise_list_add_dialog_titile">Add Exercise</string>
     <string name="add_exercise_form_error">Empty or invalid fields</string>
     <string name="exercises_selected_count">count</string>
+    <string name="exercises_delete">Delete Exercise(s)</string>
+    <plurals name="exercises_delete">
+        <item quantity="one">Delete %1$d exercise?</item>
+        <item quantity="other">Delete %1$d exercises?</item>
+    </plurals>
 
 
     <!-- Global -->
@@ -47,6 +52,8 @@
     <string name="ok">Ok</string>
     <string name="delete">Delete</string>
     <string name="modify">Modify</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
 
 </resources>

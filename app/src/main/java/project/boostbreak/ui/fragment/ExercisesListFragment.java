@@ -2,6 +2,7 @@ package project.boostbreak.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,6 +17,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import project.boostbreak.R;
+import project.boostbreak.callback.DialogResponseCallBack;
 import project.boostbreak.database.ExerciseDAO;
 import project.boostbreak.helper.ActionBarHelper;
 import project.boostbreak.helper.AlertDialogHelper;
@@ -58,14 +60,24 @@ public class ExercisesListFragment extends ListFragment implements BaseFragment{
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.delete_exercises:
-                    //TODO
+                    AlertDialogHelper.deleteExerciseAlertDialog(itemsSelected, new DialogResponseCallBack() {
+                        @Override
+                        public void onPositiveResponse() {
+                            deleteExercises(listAdapter.getSelectedItems());
+                            actionMode.finish();
+                        }
+
+                        @Override
+                        public void onNegativeResponse() {
+
+                        }
+                    });
                     break;
                 case R.id.modify_exercises:
-                    //TODO
+                    modifyExercise(listAdapter.getSelectedItems());
                     break;
             }
-
-            return false;
+            return true;
         }
 
         @Override
@@ -135,17 +147,17 @@ public class ExercisesListFragment extends ListFragment implements BaseFragment{
 
             case R.id.add_exercise:
 
-                AlertDialogHelper.addExerciseAlertDialog(new ExerciseAdditionCallBack() {
+                AlertDialogHelper.addExerciseAlertDialog(null, new ExerciseAdditionCallBack() {
                     @Override
                     public void onNewExerciseAdded() {
 
-                        try{
+                        try {
                             exerciseDAO.open();
                             exerciseList.clear();
                             exerciseList.addAll(exerciseDAO.getAllExercises());
                             listAdapter.notifyDataSetChanged();
                             exerciseDAO.close();
-                        }catch (SQLException e){
+                        } catch (SQLException e) {
                             LogUtils.error(this.getClass(), "onActivityCreated", "Unable to open exerciseDAO");
                             e.printStackTrace();
                         }
@@ -234,6 +246,69 @@ public class ExercisesListFragment extends ListFragment implements BaseFragment{
             actionMode.setTitle(itemsSelected + " Selected");
 
         }
+    }
+
+
+    /**
+     * Modify first exercise with value set to true
+     * @param selectedItems : SparseBooleanArray of items
+     */
+    private void modifyExercise(SparseBooleanArray selectedItems) {
+
+        int selectedItem = -1;
+        for (int i = 0; i < exerciseList.size() ; i ++) {
+            if (selectedItems.get(i)) {
+                selectedItem = i;
+                break;
+            }
+        }
+
+
+        LogUtils.info(this.getClass(), "modifyExercises", "Selected item position: " + selectedItem);
+
+        if (selectedItem >= 0) {
+
+            final Exercise exercise = exerciseList.get(selectedItem);
+
+            AlertDialogHelper.addExerciseAlertDialog(exercise, new ExerciseAdditionCallBack() {
+                @Override
+                public void onNewExerciseAdded() {
+                    listAdapter.notifyDataSetChanged();
+                    actionMode.finish();
+                }
+            });
+
+        }
+
+    }
+
+    /**
+     * Delete selected exercises
+     * @param selectedItems : SparseBooleanArray of exercises to delete
+     */
+    private void deleteExercises(SparseBooleanArray selectedItems) {
+
+        try {
+            exerciseDAO.open();
+
+            for (int i = 0 ; i < exerciseList.size() ; i++) {
+
+                if (selectedItems.get(i)) {
+                    exerciseDAO.deleteExercise(exerciseList.remove(i));
+                }
+
+            }
+
+            listAdapter.notifyDataSetChanged();
+
+            exerciseDAO.close();
+        } catch (SQLException e) {
+            LogUtils.error(this.getClass(), "onActivityCreated", "Unable to open exerciseDAO");
+            e.printStackTrace();
+        }
+
+
+
     }
 
 }

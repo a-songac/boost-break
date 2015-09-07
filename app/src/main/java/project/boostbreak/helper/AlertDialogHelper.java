@@ -3,6 +3,7 @@ package project.boostbreak.helper;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import java.sql.SQLException;
 
 import project.boostbreak.R;
 import project.boostbreak.application.BoostBreakApplication;
+import project.boostbreak.callback.DialogResponseCallBack;
 import project.boostbreak.database.ExerciseDAO;
 import project.boostbreak.model.Exercise;
 import project.boostbreak.ui.UiUtils;
@@ -24,14 +26,24 @@ import project.boostbreak.ui.view.holder.AddExerciseFormViewHolder;
  */
 public class AlertDialogHelper {
 
-    public static void addExerciseAlertDialog(final ExerciseAdditionCallBack callBack) {
+    /**
+     * Alert dialog to add new exercise or modify an existing one
+     * @param callBack
+     */
+    public static void addExerciseAlertDialog(final @Nullable Exercise exercise, final ExerciseAdditionCallBack callBack) {
+
+        final boolean newExerciseFlag = exercise == null;
 
         final Context context = BoostBreakApplication.getGlobalContext();
 
         final View formView = LayoutInflater.from(context).inflate(R.layout.add_exercise_layout, null);
         final AddExerciseFormViewHolder viewHolder = new AddExerciseFormViewHolder(formView);
         final AddExerciseFormViewBinder viewBinder = new AddExerciseFormViewBinder(viewHolder);
-        viewBinder.bind();
+
+        if (newExerciseFlag)
+            viewBinder.bind();
+        else
+            viewBinder.bind(exercise);
 
 
         final AlertDialog dialog = new AlertDialog.Builder(context)
@@ -56,14 +68,23 @@ public class AlertDialogHelper {
             public void onClick(View v) {
 
                 if (viewBinder.validateForm()) {
-                    Exercise exercise = viewBinder.retrieveData();
+
                     ExerciseDAO exerciseDAO = ExerciseDAO.getInstance();
                     try{
                         exerciseDAO.open();
-                        exerciseDAO.addNewExercise(
-                                exercise.getName(),
-                                exercise.getDescription(),
-                                exercise.getCategory());
+
+                        if (newExerciseFlag) {
+                            Exercise newExercise = viewBinder.retrieveData();
+                            exerciseDAO.addNewExercise(
+                                    newExercise.getName(),
+                                    newExercise.getDescription(),
+                                    newExercise.getCategory());
+                        } else {
+
+                            viewBinder.updateExercise(exercise);
+                            exerciseDAO.updateExercise(exercise);
+
+                        }
 
                         exerciseDAO.close();
                         callBack.onNewExerciseAdded();
@@ -82,6 +103,38 @@ public class AlertDialogHelper {
 
             }
         });
+
+    }
+
+    /**
+     * Delete exercises
+     * @param count : number of exercises to delete
+     * @param callBack : callback
+     */
+    public static void deleteExerciseAlertDialog(int count, final DialogResponseCallBack callBack) {
+
+        Context context = BoostBreakApplication.getGlobalContext();
+
+        String msg = String.format(context.getResources().getQuantityString(R.plurals.exercises_delete, count),
+                count);
+
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setTitle(context.getString(R.string.exercises_delete))
+                .setMessage(msg)
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        callBack.onNegativeResponse();
+                    }
+                })
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        callBack.onPositiveResponse();
+                    }
+                })
+                .create();
+        dialog.show();
 
     }
 }
