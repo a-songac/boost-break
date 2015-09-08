@@ -3,7 +3,7 @@ package project.boostbreak.application;
 import android.app.Application;
 import android.content.Context;
 
-import project.boostbreak.ui.view.LogUtils;
+import project.boostbreak.LogUtils;
 
 /**
  * Class to implement boost break application

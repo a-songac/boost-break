@@ -19,7 +19,7 @@ import project.boostbreak.R;
 import project.boostbreak.database.ExerciseDAO;
 import project.boostbreak.model.Exercise;
 import project.boostbreak.ui.core.BaseViewHolder;
-import project.boostbreak.ui.view.LogUtils;
+import project.boostbreak.LogUtils;
 
 /**
  * Exercise List Adapter

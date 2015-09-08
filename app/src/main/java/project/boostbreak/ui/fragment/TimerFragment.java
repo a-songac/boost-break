@@ -27,7 +27,7 @@ import project.boostbreak.helper.ActionBarHelper;
 import project.boostbreak.helper.ConstantsHelper;
 import project.boostbreak.helper.NavigationHelper;
 import project.boostbreak.helper.NotificationHelper;
-import project.boostbreak.ui.UiUtils;
+import project.boostbreak.UiUtils;
 import project.boostbreak.ui.core.BaseFragment;
 import project.boostbreak.ui.view.binder.TimerFragmentViewBinder;
 import project.boostbreak.ui.view.holder.TimerFragmentViewHolder;

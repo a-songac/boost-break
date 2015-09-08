@@ -1,4 +1,4 @@
-package project.boostbreak.ui.view;
+package project.boostbreak;
 
 import android.util.Log;
 

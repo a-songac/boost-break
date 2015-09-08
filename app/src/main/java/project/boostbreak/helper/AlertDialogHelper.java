@@ -15,9 +15,9 @@ import project.boostbreak.application.BoostBreakApplication;
 import project.boostbreak.callback.DialogResponseCallBack;
 import project.boostbreak.database.ExerciseDAO;
 import project.boostbreak.model.Exercise;
-import project.boostbreak.ui.UiUtils;
+import project.boostbreak.UiUtils;
 import project.boostbreak.ui.fragment.ExerciseAdditionCallBack;
-import project.boostbreak.ui.view.LogUtils;
+import project.boostbreak.LogUtils;
 import project.boostbreak.ui.view.binder.AddExerciseFormViewBinder;
 import project.boostbreak.ui.view.holder.AddExerciseFormViewHolder;
 

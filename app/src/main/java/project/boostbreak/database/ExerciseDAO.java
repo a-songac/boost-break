@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import project.boostbreak.model.Exercise;
-import project.boostbreak.ui.view.LogUtils;
+import project.boostbreak.LogUtils;
 
 /**
  * Class to implement exercise DAO

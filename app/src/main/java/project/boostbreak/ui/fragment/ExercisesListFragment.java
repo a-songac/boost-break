@@ -24,7 +24,7 @@ import project.boostbreak.helper.AlertDialogHelper;
 import project.boostbreak.model.Exercise;
 import project.boostbreak.ui.adapter.ExerciseListAdapter;
 import project.boostbreak.ui.core.BaseFragment;
-import project.boostbreak.ui.view.LogUtils;
+import project.boostbreak.LogUtils;
 
 public class ExercisesListFragment extends ListFragment implements BaseFragment{
 

@@ -1,4 +1,4 @@
-package project.boostbreak.ui;
+package project.boostbreak;
 
 import android.content.Context;
 import android.widget.Toast;
