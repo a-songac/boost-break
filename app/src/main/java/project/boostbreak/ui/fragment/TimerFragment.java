@@ -21,13 +21,13 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 
 import project.boostbreak.R;
+import project.boostbreak.UiUtils;
 import project.boostbreak.broadcastreceiver.AlarmReceiver;
 import project.boostbreak.callback.TimePickerCallBack;
 import project.boostbreak.helper.ActionBarHelper;
 import project.boostbreak.helper.ConstantsHelper;
 import project.boostbreak.helper.NavigationHelper;
 import project.boostbreak.helper.NotificationHelper;
-import project.boostbreak.UiUtils;
 import project.boostbreak.ui.core.BaseFragment;
 import project.boostbreak.ui.view.binder.TimerFragmentViewBinder;
 import project.boostbreak.ui.view.holder.TimerFragmentViewHolder;
@@ -67,7 +67,6 @@ public class TimerFragment extends Fragment implements TimePickerCallBack, BaseF
      */
     private int timeInSeconds = ConstantsHelper.DEFAULT_INITIAL_TIME_SECONDS;
 
-
     /**
      * Handler
      */
@@ -83,12 +82,16 @@ public class TimerFragment extends Fragment implements TimePickerCallBack, BaseF
      */
     private ActionBarDrawerToggle drawerToggle;
 
+    /**
+     * Whether activity is being recreated after configuration change
+     */
+    private boolean activityRecreated = false;
+
 
     /**
      * Constructor
      */
     public TimerFragment() {}
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -100,6 +103,22 @@ public class TimerFragment extends Fragment implements TimePickerCallBack, BaseF
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        if (savedInstanceState != null) {
+            activityRecreated = true;
+
+            momentAlarmTriggersMillis = savedInstanceState.getLong(
+                    ConstantsHelper.MOMENT_ALARM_TRIGGERS_MILLI_TAG,
+                    -1);
+            chosenTimeInSeconds = savedInstanceState.getInt(
+                    ConstantsHelper.CHOSEN_TIME_IN_SECONDS_TAG,
+                    ConstantsHelper.DEFAULT_INITIAL_TIME_SECONDS);
+
+            timeInSeconds = savedInstanceState.getInt(
+                    ConstantsHelper.TIME_IN_SECONDS_TAG,
+                    chosenTimeInSeconds);
+
+        }
+
         ActionBarHelper.getInstance().setTimerFragmentActionBar();
 
         setHasOptionsMenu(true);
@@ -107,7 +126,7 @@ public class TimerFragment extends Fragment implements TimePickerCallBack, BaseF
         this.viewHolder = new TimerFragmentViewHolder(getView());
         this.viewBinder = new TimerFragmentViewBinder(viewHolder);
 
-        viewBinder.bind(ConstantsHelper.DEFAULT_INITIAL_TIME_SECONDS);
+        viewBinder.bind(timeInSeconds);
 
         this.alarmManager = AlarmManager.class.cast(
                 getActivity().getSystemService(Context.ALARM_SERVICE));
@@ -127,7 +146,7 @@ public class TimerFragment extends Fragment implements TimePickerCallBack, BaseF
 
             NotificationHelper.getInstance().cancelOngoingWorkPeriodNotification();
 
-            if (viewHolder.getStartTimerButton().isChecked()) {
+            if (viewHolder.getStartTimerButton().isChecked() && !activityRecreated) {
                 timeInSeconds = (int)((momentAlarmTriggersMillis - System.currentTimeMillis()) / 1000);
                 handler.post(updateTimerThread);
             }
@@ -140,6 +159,8 @@ public class TimerFragment extends Fragment implements TimePickerCallBack, BaseF
         }
 
         viewHolder.getDrawerLayout().closeDrawer(Gravity.START);
+
+        activityRecreated = false;
     }
 
     @Override
@@ -159,6 +180,16 @@ public class TimerFragment extends Fragment implements TimePickerCallBack, BaseF
 
         chosenTimeInSeconds = timeInSeconds = timeSeconds;
         viewBinder.resetTimer(chosenTimeInSeconds = timeSeconds);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putLong(ConstantsHelper.MOMENT_ALARM_TRIGGERS_MILLI_TAG, momentAlarmTriggersMillis);
+        outState.putInt(ConstantsHelper.CHOSEN_TIME_IN_SECONDS_TAG, chosenTimeInSeconds);
+        outState.putInt(ConstantsHelper.TIME_IN_SECONDS_TAG, timeInSeconds);
+
     }
 
     @Override
@@ -216,37 +247,40 @@ public class TimerFragment extends Fragment implements TimePickerCallBack, BaseF
      * Set start time button behaviour
      */
     private void setStartTimerButtonBehaviour() {
-
         this.viewHolder.getStartTimerButton().setOnCheckedChangeListener(
                 new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                Intent alarmTriggeredIntent = new Intent(getActivity(), AlarmReceiver.class);
-                alarmTriggeredPendingIntent = PendingIntent.getBroadcast(
-                        getActivity(),
-                        0,
-                        alarmTriggeredIntent,
-                        0);
-
                 if (isChecked) {
 
-                    boolean wasAlreadyInPeriod = isInPeriod();
-                    if (!isInPeriod()) {
-                        timeInSeconds = chosenTimeInSeconds;
+                    if (!activityRecreated) {
+
+                        momentAlarmTriggersMillis = System.currentTimeMillis() + timeInSeconds * 1000L;
+
+                        Intent alarmTriggeredIntent = new Intent(getActivity(), AlarmReceiver.class);
+                        alarmTriggeredPendingIntent = PendingIntent.getBroadcast(
+                                getActivity(),
+                                0,
+                                alarmTriggeredIntent,
+                                PendingIntent.FLAG_UPDATE_CURRENT);
+                        alarmManager.set(
+                                AlarmManager.RTC_WAKEUP,
+                                momentAlarmTriggersMillis,
+                                alarmTriggeredPendingIntent);
                     }
-                    momentAlarmTriggersMillis = System.currentTimeMillis() + timeInSeconds * 1000L;
-                    alarmManager.set(
-                            AlarmManager.RTC_WAKEUP,
-                            momentAlarmTriggersMillis,
-                            alarmTriggeredPendingIntent);
+
                     handler.post(updateTimerThread);
 
-                    String toastMessage = wasAlreadyInPeriod ?
-                            "The work period has resumed." :
-                            "A work period has started";
+                    if (!activityRecreated) {
 
-                    UiUtils.displayToastLong(toastMessage);
+                        //TODO String resource
+                        String toastMessage = isInPeriod() ?
+                                "The work period has resumed." :
+                                "A work period has started";
+
+                        UiUtils.displayToastLong(toastMessage);
+                    }
 
                 } else {
 
@@ -285,8 +319,7 @@ public class TimerFragment extends Fragment implements TimePickerCallBack, BaseF
             public void onClick(View v) {
                 // stop the timer and cancel the alarm
                 handler.removeCallbacks(updateTimerThread);
-                viewBinder.resetTimer(chosenTimeInSeconds);
-                alarmManager.cancel(alarmTriggeredPendingIntent);
+                viewHolder.getStartTimerButton().setChecked(false);
                 momentAlarmTriggersMillis = -1;
                 NavigationHelper.getInstance().showTimePickerDialog(chosenTimeInSeconds);
             }
@@ -374,7 +407,7 @@ public class TimerFragment extends Fragment implements TimePickerCallBack, BaseF
      */
     private boolean isInPeriod() {
 
-        return momentAlarmTriggersMillis > System.currentTimeMillis();
+        return chosenTimeInSeconds > timeInSeconds;
 
     }
 
