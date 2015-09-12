@@ -17,7 +17,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 import project.boostbreak.R;
-import project.boostbreak.callback.DialogResponseCallBack;
+import project.boostbreak.callback.IExerciseAdditionCallBack;
+import project.boostbreak.callback.IDialogResponseCallBack;
 import project.boostbreak.database.ExerciseDAO;
 import project.boostbreak.helper.ActionBarHelper;
 import project.boostbreak.helper.AlertDialogHelper;
@@ -60,7 +61,7 @@ public class ExercisesListFragment extends ListFragment implements BaseFragment{
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.delete_exercises:
-                    AlertDialogHelper.deleteExerciseAlertDialog(itemsSelected, new DialogResponseCallBack() {
+                    AlertDialogHelper.deleteExerciseAlertDialog(itemsSelected, new IDialogResponseCallBack() {
                         @Override
                         public void onPositiveResponse() {
                             deleteExercises(listAdapter.getSelectedItems());
@@ -147,7 +148,7 @@ public class ExercisesListFragment extends ListFragment implements BaseFragment{
 
             case R.id.add_exercise:
 
-                AlertDialogHelper.addExerciseAlertDialog(null, new ExerciseAdditionCallBack() {
+                AlertDialogHelper.addExerciseAlertDialog(null, new IExerciseAdditionCallBack() {
                     @Override
                     public void onNewExerciseAdded() {
 
@@ -270,7 +271,7 @@ public class ExercisesListFragment extends ListFragment implements BaseFragment{
 
             final Exercise exercise = exerciseList.get(selectedItem);
 
-            AlertDialogHelper.addExerciseAlertDialog(exercise, new ExerciseAdditionCallBack() {
+            AlertDialogHelper.addExerciseAlertDialog(exercise, new IExerciseAdditionCallBack() {
                 @Override
                 public void onNewExerciseAdded() {
                     listAdapter.notifyDataSetChanged();

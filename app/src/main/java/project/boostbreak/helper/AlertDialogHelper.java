@@ -12,11 +12,11 @@ import java.sql.SQLException;
 
 import project.boostbreak.R;
 import project.boostbreak.application.BoostBreakApplication;
-import project.boostbreak.callback.DialogResponseCallBack;
+import project.boostbreak.callback.IDialogResponseCallBack;
 import project.boostbreak.database.ExerciseDAO;
 import project.boostbreak.model.Exercise;
 import project.boostbreak.UiUtils;
-import project.boostbreak.ui.fragment.ExerciseAdditionCallBack;
+import project.boostbreak.callback.IExerciseAdditionCallBack;
 import project.boostbreak.LogUtils;
 import project.boostbreak.ui.view.binder.AddExerciseFormViewBinder;
 import project.boostbreak.ui.view.holder.AddExerciseFormViewHolder;
@@ -30,7 +30,7 @@ public class AlertDialogHelper {
      * Alert dialog to add new exercise or modify an existing one
      * @param callBack
      */
-    public static void addExerciseAlertDialog(final @Nullable Exercise exercise, final ExerciseAdditionCallBack callBack) {
+    public static void addExerciseAlertDialog(final @Nullable Exercise exercise, final IExerciseAdditionCallBack callBack) {
 
         final boolean newExerciseFlag = exercise == null;
 
@@ -111,7 +111,7 @@ public class AlertDialogHelper {
      * @param count : number of exercises to delete
      * @param callBack : callback
      */
-    public static void deleteExerciseAlertDialog(int count, final DialogResponseCallBack callBack) {
+    public static void deleteExerciseAlertDialog(int count, final IDialogResponseCallBack callBack) {
 
         Context context = BoostBreakApplication.getGlobalContext();
 

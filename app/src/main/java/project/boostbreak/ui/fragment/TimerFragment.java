@@ -23,7 +23,7 @@ import android.widget.CompoundButton;
 import project.boostbreak.R;
 import project.boostbreak.UiUtils;
 import project.boostbreak.broadcastreceiver.AlarmReceiver;
-import project.boostbreak.callback.TimePickerCallBack;
+import project.boostbreak.callback.ITimePickerCallBack;
 import project.boostbreak.helper.ActionBarHelper;
 import project.boostbreak.helper.ConstantsHelper;
 import project.boostbreak.helper.NavigationHelper;
@@ -35,7 +35,7 @@ import project.boostbreak.ui.view.holder.TimerFragmentViewHolder;
 /**
  * Class to implement timer fragment
  */
-public class TimerFragment extends Fragment implements TimePickerCallBack, BaseFragment {
+public class TimerFragment extends Fragment implements ITimePickerCallBack, BaseFragment {
 
     /**
      * Alarm manager
