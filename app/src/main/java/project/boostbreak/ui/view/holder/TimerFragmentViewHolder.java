@@ -1,10 +1,7 @@
 package project.boostbreak.ui.view.holder;
 
-import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -37,18 +34,6 @@ public class TimerFragmentViewHolder extends BaseViewHolder{
     private TextView timer;
 
     /**
-     * Drawer list view
-     */
-    private ListView drawerList;
-
-    private DrawerLayout drawerLayout;
-
-    /**
-     * Drawer relative layout
-     */
-    private RelativeLayout drawerRelativeLayout;
-
-    /**
      * Constructor
      * @param view : parent view
      */
@@ -58,9 +43,6 @@ public class TimerFragmentViewHolder extends BaseViewHolder{
         startTimerButton = ToggleButton.class.cast(view.findViewById(R.id.startButton));
         setTimeButton = Button.class.cast(view.findViewById(R.id.setTimeButton));
         resetTimerButton = Button.class.cast(view.findViewById(R.id.resetButton));
-        drawerList = ListView.class.cast(view.findViewById(R.id.left_drawer));
-        drawerLayout = DrawerLayout.class.cast(view.findViewById(R.id.drawer_layout));
-        drawerRelativeLayout = RelativeLayout.class.cast(view.findViewById(R.id.drawer_rel_layout));
         timer = TextView.class.cast(view.findViewById(R.id.time_text_view));
     }
 
@@ -80,15 +62,4 @@ public class TimerFragmentViewHolder extends BaseViewHolder{
         return timer;
     }
 
-    public ListView getDrawerList() {
-        return drawerList;
-    }
-
-    public DrawerLayout getDrawerLayout() {
-        return drawerLayout;
-    }
-
-    public RelativeLayout getDrawerRelativeLayout() {
-        return drawerRelativeLayout;
-    }
 }

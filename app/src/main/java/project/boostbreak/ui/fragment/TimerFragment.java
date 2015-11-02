@@ -8,16 +8,12 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 
 import project.boostbreak.R;
@@ -78,11 +74,6 @@ public class TimerFragment extends Fragment implements ITimePickerCallBack, Base
     private PendingIntent alarmTriggeredPendingIntent;
 
     /**
-     * Drawer toggle
-     */
-    private ActionBarDrawerToggle drawerToggle;
-
-    /**
      * Whether activity is being recreated after configuration change
      */
     private boolean activityRecreated = false;
@@ -134,7 +125,6 @@ public class TimerFragment extends Fragment implements ITimePickerCallBack, Base
         this.setStartTimerButtonBehaviour();
         this.setResetButtonBehaviour();
         this.setSetTimeButtonBehaviour();
-        this.setNavigationDrawer();
 
     }
 
@@ -158,7 +148,6 @@ public class TimerFragment extends Fragment implements ITimePickerCallBack, Base
 
         }
 
-        viewHolder.getDrawerLayout().closeDrawer(Gravity.START);
 
         activityRecreated = false;
     }
@@ -206,13 +195,11 @@ public class TimerFragment extends Fragment implements ITimePickerCallBack, Base
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // toggle nav drawer on selecting action bar app icon/title
-        if (drawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
+
         // Handle action bar actions click
         switch (item.getItemId()) {
-            case R.id.action_settings:
+            case R.id.action_exercies:
+                NavigationHelper.getInstance().navigateToExerciseListFragment();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -221,26 +208,10 @@ public class TimerFragment extends Fragment implements ITimePickerCallBack, Base
 
 
 
-    /***
-     * Called when invalidateOptionsMenu() is triggered
-     */
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        // if nav drawer is opened, hide the action items
-        boolean drawerOpen = viewHolder.getDrawerLayout().isDrawerOpen(
-                viewHolder.getDrawerRelativeLayout());
-        menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
-
-    }
-
-
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggle
-        drawerToggle.onConfigurationChanged(newConfig);
-        drawerToggle.syncState();
+
     }
 
     /**
@@ -326,57 +297,6 @@ public class TimerFragment extends Fragment implements ITimePickerCallBack, Base
         });
     }
 
-    /**
-     * Set navigation drawer
-     */
-    private void setNavigationDrawer() {
-
-        // todo: resources (string array)
-        final String[] drawerListViewElements = {"Exercises","Statistics"};
-
-        // list adapter for drawer
-        viewHolder.getDrawerList().setAdapter(
-                new ArrayAdapter<>(
-                        getActivity(),
-                        R.layout.drawer_list_item,
-                        drawerListViewElements)
-        );
-
-        viewHolder.getDrawerLayout().setScrimColor(0xE0000000);
-        viewHolder.getDrawerList().setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
-                    case 0:
-                        NavigationHelper.getInstance().navigateToExerciseListFragment();
-                        break;
-
-                    case 1:
-                        NavigationHelper.getInstance().navigateToStatisticsFragment();
-                        break;
-
-                }
-            }
-        });
-
-        this.drawerToggle = new ActionBarDrawerToggle(
-                getActivity(),
-                viewHolder.getDrawerLayout(),
-                R.string.app_name, // nav drawer open - description for accessibility
-                R.string.app_name // nav drawer close - description for accessibility
-        ){
-            public void onDrawerClosed(View view) {
-                // calling onPrepareOptionsMenu() to show action bar icons
-                getActivity().invalidateOptionsMenu();
-            }
-
-            public void onDrawerOpened(View drawerView) {
-                // calling onPrepareOptionsMenu() to hide action bar icons
-                getActivity().invalidateOptionsMenu();
-            }
-        };
-        viewHolder.getDrawerLayout().setDrawerListener(drawerToggle);
-    }
 
     /**
      * Runnable to decrement the timer clock for the timer

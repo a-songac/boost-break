@@ -34,10 +34,10 @@ public class ActionBarHelper {
      */
     public void setTimerFragmentActionBar() {
 
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_drawer);
-        actionBar.setDisplayUseLogoEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setHomeButtonEnabled(false);
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setTitle(R.string.app_name);
 
     }
 
@@ -48,7 +48,7 @@ public class ActionBarHelper {
 
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+//        actionBar.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
         actionBar.setTitle(R.string.title_activity_exercises_list);
         actionBar.setDisplayUseLogoEnabled(false);
 

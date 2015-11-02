@@ -17,7 +17,7 @@
     <string name="break_time_remaining">Next break in</string>
     <string name="break_time_remaining1">Break ends in</string>
     <string name="chronometer">Chronometer</string>
-    <string name="time_zero">00:00:00</string>
+    <string name="time_zero">0:00:00</string>
 
     <string name="title_activity_exercises_list">Exercises</string>
     <string name="title_activity_statistics">Stats</string>
